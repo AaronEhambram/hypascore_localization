@@ -1,0 +1,6 @@
+results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/refined_localization/T2/osm/test2_T2_refined_loc.txt
+gt_trajectory_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/refined_localization/T2/osm/test2_T2_gt_traj.txt
+map_file:/home/ehambram/Data/Stadtmodell_Hannover_CityGML_LoD2/OpenStreetMap/nordstadt_8_shaped_only.map
+x_utm_offset:548708.8143
+y_utm_offset:5804434.8164
+sample_driven_distances:

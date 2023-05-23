@@ -1,0 +1,126 @@
+<launch>
+	<arg name="rosbags_list" default="[/home/ehambram/Data/KITTI/0027_09_30_2011/kitti_0027.bag]"/>
+	<arg name="overall_results_file" default=""/>
+
+	<node pkg="hypascore_localization"    type="hypascore_localization_node" name="hypascore_localization_node" output="screen" required="true">  <!--launch-prefix="gdb -ex run -args"-->
+		<!--*****************Meta Parameters*****************-->
+		<param name="left_cam_image_topic" 	  type="string" 	value="/stereo/left/image_color" />
+		<param name="right_cam_image_topic" 	type="string" 	value="/stereo/right/image_color"/>
+    <param name="lidar_topic" 						type="string" 	value="/cepton/points"/>
+		<param name="imu_topic" 							type="string" 	value="/imu"/>
+		<param name="gt_pose_topic" 	        type="string" 	value="/utm_T_platform_gt"/>
+		<param name="tf_topic" 				    		type="string" 	value="/tf"/>
+    <param name="calibration_folder" 			type="string" 	value="/home/ehambram/Data/KITTI/0027_09_30_2011/calibration_data/"/>
+		<param name="city_model_file" 				type="string" 	value="/home/ehambram/Data/KITTI/0027_09_30_2011/0027_30_09_2011_map.map"/>
+		<param name="rosbag_read_start_stamp" type="double" 		value="1317379229.1"/>
+		<param name="rosbag_read_stop_stamp"  type="double" 		value="1317379340.62"/>
+		<param name="utm_world_offset_x"  		type="double" 		value="455636.0940099774161354"/>
+		<param name="utm_world_offset_y"  		type="double" 		value="5425992.00085667707026"/>
+		<param name="utm_world_offset_z"  		type="double" 		value="0"/>
+		<param name="use_real_time_speed"  		type="bool" 		value="True"/>
+		<rosparam param="rosbags_list" 			subst_value="True">$(arg rosbags_list)</rosparam>
+		<param name="file_gt_poses"  					type="string" 	value=""/> 
+		<param name="file_overall_results"  	type="string" 	value=""/> 
+		<param name="file_overall_only_rt_results"  	type="string" 	value=""/> 
+
+		<!--*************Image Processing Parameters*************-->
+		<param name="im_resize_factor"  													type="double" value="1.0"/>
+		<param name="right_image_px_y_translate"  								type="int" 		value="0"/>
+		<param name="visual_feature_uncertainty_radius_left_im" 	type="double" value="0.3"/>
+		<param name="visual_feature_uncertainty_radius_right_im" 	type="double" value="1.0"/>
+		<param name="horizontal_tiles_masks" 											type="int" 		value="5"/>
+		<param name="vertical_tiles_masks" 												type="int" 		value="4"/>
+		<param name="min_features_to_init" 												type="int" 		value="100"/>
+		<param name="min_features_to_track_only" 									type="int" 		value="80"/>
+		<param name="min_features_in_mask_to_detect_new" 					type="int" 		value="5"/>
+		<param name="min_features_in_mask_distribution" 					type="int" 		value="3"/>
+		<param name="min_feature_distribution" 										type="double" value="0.4"/>
+		<param name="max_optical_flow_error" 											type="double" value="10.0"/>
+		<param name="max_vertical_pixel_error" 										type="double" value="2.0"/>
+		<param name="max_residual_stereo_odom" 										type="double" value="1.0"/>		
+		<param name="max_bad_measurements_portion_stereo_odom" 		type="double" value="0.2"/>
+		<param name="max_residual_bundle_adjustment" 							type="double" value="4.0"/>
+		<param name="min_connected_good_landmarks" 								type="int" 		value="5"/>
+		<param name="eps_phi_bisection" 													type="double" value="0.005"/>
+		<param name="eps_x_bisection" 														type="double" value="0.1"/>
+		<!--*************Batch length for Optimization*************-->
+		<param name="max_batch_length" 														type="double" value="5.0"/>
+		<!--Image Visualization Parameters-->
+		<param name="show_stereo_matches" 				type="bool" 		value="False"/>
+		<param name="show_left_features" 					type="bool" 		value="True"/>
+		<param name="cv_wait_key_time" 						type="int" 			value="1"/>
+		<!-- Evaluation results file -->
+		<param name="file_visual_odom_results" 										type="string" 	value=""/>
+
+		<!--*************LiDAR Parameters*************-->
+		<param name="distance_delta" 													type="double" 	value="0.06"/>
+		<param name="lidar_type" 															type="string" 	value="velodyne"/>
+		<param name="vertical_angle_delta" 										type="double" 	value="0.00087266426"/>
+		<param name="horizontal_angle_delta" 									type="double" 	value="0.00087266426"/>
+		<param name="min_z_clip" 															type="double" 	value="-1.0"/>
+
+		<!--*************Global Localization Parameters*************-->
+		<!--Line extraction from LiDAR data-->
+		<param name="skip_row" 																type="int" 			value="0"/>
+		<param name="skip_col" 																type="int" 			value="3"/> 
+		<param name="distance_bin_size" 											type="double" 	value="0.2"/>
+		<param name="max_line_points_step_size" 							type="int" 			value="5"/>
+		<param name="max_angle_bin_dist" 											type="int" 			value="10"/>
+		<param name="max_neighbour_point_distance" 						type="double" 	value="4.0"/>
+		<param name="min_num_points_on_line" 									type="int" 			value="6"/>
+		<param name="min_line_length" 												type="double" 	value="7.5"/>
+		<param name="selected_points_distance" 								type="double" 	value="1.5"/>
+		<!--Initialization-->
+		<param name="init_rotation_uncertainty_radius" 				type="double" 	value="3.14"/>	<!--0.0001-->	<!--0.34906585-->	<!--0.523598776-->	<!--1.57-->	<!--3.14-->
+		<param name="rotation_bins_amount"  									type="int" 			value="25"/>				<!--1-->			<!--4-->					<!--6-->						<!--36-->		<!--72-->   <!--5°-bins-->
+		<param name="init_x_translation_uncertainty_radius" 	type="double" 	value="100"/>
+		<param name="init_y_translation_uncertainty_radius" 	type="double" 	value="100"/>
+		<!--odometry uncertainty-->
+		<param name="x_odom_translation_uncertainty_radius" 	type="double" 	value="0.006"/>
+		<param name="y_odom_translation_uncertainty_radius" 	type="double" 	value="0.003"/>
+		<param name="odom_rotation_uncertainty_radius" 				type="double" 	value="0.00005"/>
+		<!--Bisection minimal size-->
+		<param name="min_position_box_diam_length" 						type="double" 	value="1.0"/>
+		<param name="min_rotation_diam_length" 								type="double" 	value="0.11"/>
+		<!--Output Image-->
+		<param name="x_map_size" 															type="double" 	value="550"/>
+		<param name="y_map_size" 															type="double" 	value="310"/>
+		<param name="size_per_pixel" 													type="double" 	value="0.8"/>
+		<!--Local LiDAR Point based weighting and deleting-->
+		<param name="wall_line_uncertainty" 									type="double" 	value="2.0"/> 
+		<param name="max_point_line_association_distance" 		type="double" 	value="2.0"/>
+		<!-- GPS Data -->
+		<param name="gps_uncertainty" 												type="double" 	value="40.0"/>
+		<param name="gps_data_frequency" 											type="double" 	value="1.0"/>
+		<!--Results File-->
+		<param name="results_file" 														type="string" 	value=""/>
+		<param name="compute_results" 												type="bool" 		value="False"/>
+
+		<!--*************Tracking Parameters*************-->
+		<param name="min_age_to_initiate_track"  							type="int" 			value="100"/>
+		<param name="min_dist_to_associate_point_to_facade" 	type="double" 	value="1.0"/>
+		<!--Hough Transformation Line Extraction-->
+		<param name="largest_accumulator_value_factor" 				type="double" 	value="0.98"/>
+		<param name="significance_factor_min" 								type="double" 	value="2"/>
+		<param name="angle_quantization" 											type="double" 	value="0.0087266"/>
+		<param name="d_quantization" 													type="double" 	value="0.01"/>
+		<param name="min_facade_length" 											type="double" 	value="3.0"/>
+		<param name="wall_position_uncertainty" 							type="double" 	value="2.0"/>
+		<param name="wall_orientation_uncertainty" 						type="double" 	value="0.15"/>
+		<param name="min_number_points_on_facade" 						type="int" 			value="150"/>
+		<param name="pca_eigen_line_length" 									type="double" 	value="2.0"/>
+		<!-- Particle comparison (local and global localization best)-->
+		<param name="max_translation_difference" 							type="double" 	value="3.0"/>
+		<param name="max_rotation_difference" 								type="double" 	value="0.175"/>
+		<param name="gl_particle_better_factor" 							type="double" 	value="5.0"/>
+		<param name="min_age_to_switch_track" 								type="int" 			value="20"/>
+		<!-- Parameters to overwrite Global Localization translation -->
+		<param name="min_particle_age_to_overwrite_gl" 				type="int" 			value="180"/>
+		<param name="min_sin_angle_hull_diam" 								type="double" 	value="0.9"/>
+		<!-- Evaluation results file -->
+		<param name="file_tracker_results" 										type="string" 	value=""/>
+	</node>
+	
+
+	<node type="rviz" name="rviz_local" pkg="rviz" args="-d $(find hypascore_localization)/visu/hypascore_localization_visu.rviz" />
+</launch>

@@ -1,0 +1,6 @@
+results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/refined_localization/T1/osm/T1_refined_loc.txt
+gt_trajectory_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/refined_localization/T1/osm/T1_gt_traj.txt
+map_file:/home/ehambram/Data/Stadtmodell_Hannover_CityGML_LoD2/OpenStreetMap/nordstadt_triangle_only.map
+x_utm_offset:549169.5455
+y_utm_offset:5804118.9207
+sample_driven_distances:10,120,185,285,390,450,540,625,920

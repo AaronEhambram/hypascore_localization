@@ -1,0 +1,7 @@
+results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/full_system/0034/0034_out.txt
+rt_only_results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/full_system/0034/0034_out_rt.txt
+gt_trajectory_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/full_system/0034/0034_gt_traj.txt
+map_file:/home/ehambram/Data/KITTI/0034/0034_map.map
+x_utm_offset:461202.593279754393734
+y_utm_offset:5426208.484555691480637
+sample_driven_distances:

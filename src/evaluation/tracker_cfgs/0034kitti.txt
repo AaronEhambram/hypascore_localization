@@ -1,0 +1,6 @@
+results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/refined_localization/0034kitti/0034kitti_refined_loc.txt
+gt_trajectory_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/refined_localization/0034kitti/0034kitti_gt_traj.txt
+map_file:/home/ehambram/Data/KITTI/0034/0034_map.map
+x_utm_offset:461202.593279754393734
+y_utm_offset:5426208.484555691480637
+sample_driven_distances:

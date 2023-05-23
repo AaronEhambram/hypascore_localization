@@ -1,0 +1,7 @@
+results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/full_system/T1_lod2/T1_out.txt
+rt_only_results_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/full_system/T1_lod2/T1_out_rt.txt
+gt_trajectory_file:/home/ehambram/Documents/Promotion/Dokumentation/Dissertation/results/full_system/T1_lod2/T1_gt_traj.txt
+map_file:/home/ehambram/Data/Stadtmodell_Hannover_CityGML_LoD2/CityGML_LoD2_Nordstadt/nordstadt.map
+x_utm_offset:549169.5455
+y_utm_offset:5804118.9207
+sample_driven_distances:
