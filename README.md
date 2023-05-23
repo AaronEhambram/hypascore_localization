@@ -128,12 +128,8 @@ Now you can call the python evaluation script `src/evaluation/overall_evaluate.p
 ```
 The evaluation plots ([matplotlib](https://matplotlib.org/)) will pop up.
 
-<img src="readme/Translation_error.png" alt="overview" width="30%" height="30%">
-<img src="readme/Rotated_rectangle_hull_side_lengths.png" alt="overview" width="30%" height="30%">
-<img src="readme/Feasible_and_Consistent_set_size.png" alt="overview" width="30%" height="30%">
-<img src="readme/Trajectory.png" alt="overview" width="30%" height="30%" title="HyPaSCoRe Localization Overview">
-<img src="readme/Figure_4.png" alt="overview" width="30%" height="30%" title="HyPaSCoRe Localization Overview">
-<img src="readme/Outside_feasible_set_frames.png" alt="overview" width="30%" height="30%">
+<img src="readme/Translation_error.png" alt="overview" width="30%" height="30%"> <img src="readme/Rotated_rectangle_hull_side_lengths.png" alt="overview" width="30%" height="30%"> <img src="readme/Feasible_and_Consistent_set_size.png" alt="overview" width="30%" height="30%">
+<img src="readme/Trajectory.png" alt="overview" width="30%" height="30%" title="HyPaSCoRe Localization Overview"> <img src="readme/Figure_4.png" alt="overview" width="30%" height="30%" title="HyPaSCoRe Localization Overview"> <img src="readme/Outside_feasible_set_frames.png" alt="overview" width="30%" height="30%">
 
 ### <a name="map-parsers"></a>Download Maps and Parsers
 The building map needs to be downloaded before the localization. For the example the map-file can be downloaded. We use a custom .map-file that needs to be generated. Therefore we provide parsers that parse, for instance, .osm-files to our custom format. The parsers can be found in `src/map_tools`. To obtain the building map to any region we recommend to download the [OpenStreetMap](https://www.openstreetmap.org/#map=6/51.330/10.453) file. [JOSM](https://josm.openstreetmap.de/) is a very handy tool for that. You can download the application by
