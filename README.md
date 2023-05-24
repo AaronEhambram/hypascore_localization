@@ -23,7 +23,7 @@ The visual odometry module computes the relative motion of the vehicle. In contr
 7. [License](#License)
 
 ## <a name="Dependencies"></a>Dependencies
-The code is tested on Ubuntu 18.04 with ROS melodic and with Ubuntu 20.04 with ROS noetic. Note that you need to select the right fork depending on which distribution you are using. 
+The code is tested on Ubuntu 18.04 with ROS melodic and with Ubuntu 20.04 with ROS noetic. Note that you need to select the right branch depending on which distribution you are using. 
 
 You need to install the following framework/libraries:
 1. [Installl ROS](http://wiki.ros.org/noetic/Installation/Ubuntu)
@@ -61,7 +61,7 @@ mkdir build ; cd build ; cmake .. ; make        # build the sources
 sudo make install                               # install the library
 cd ..
 ```
-6. [Install g2o](https://github.com/RainerKuemmerle/g2o): Here we also recommend the out of source build. The commit id 
+6. [Install g2o](https://github.com/RainerKuemmerle/g2o): Here we also recommend the out of source build. The commit id to the g2o version that we use is shown in the following.
 ```bash
 git clone https://github.com/RainerKuemmerle/g2o.git  # download the sources from GitHub
 cd g2o
