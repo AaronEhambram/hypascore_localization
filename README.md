@@ -8,7 +8,7 @@ Click on the [image](readme/hypascore_localization_example.mp4) to see the tease
 The method consists of three modules as shown in the [figure](#overview) – visual odometry, coarse localization, and refined localization. The HyPaSCoRe Localization uses a stereo camera system, a LiDAR, and GNSS data, focusing on localization in urban canyons where GNSS data can be inaccurate.
 
 <a name="overview"></a><p align="center">
-<img src="readme/Overview_full_diss_new.png" alt="overview" width="50%" height="50%" title="HyPaSCoRe Localization Overview">
+<img src="readme/Overview_full_diss_new.png" alt="overview" width="70%" height="70%" title="HyPaSCoRe Localization Overview">
 </p>
 
 The visual odometry module computes the relative motion of the vehicle. In contrast, the coarse localization module uses set-membership approaches to narrow down the feasible set of poses and provides the set of most likely poses inside the feasible set using a probabilistic approach. The refined localization module further refines the coarse localization result by reducing the pessimism of the uncertainty estimate by incorporating probabilistic constraints into the set-membership approach.
