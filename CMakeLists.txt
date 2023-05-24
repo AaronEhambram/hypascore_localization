@@ -35,7 +35,7 @@ find_package(CODAC REQUIRED)
 message(STATUS "Found Codac version ${CODAC_VERSION}")
 
 # OpenCV
-set(OpenCV_DIR /home/ehambram/workspaces/libraries/opencv/opencv-3.4.13/build) # Set directory if built locally
+set(OpenCV_DIR /home/user/workspaces/libraries/opencv/build) # Set directory if built locally
 find_package(OpenCV REQUIRED)
 
 # Eigen3
@@ -48,21 +48,37 @@ find_package(PCL REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread date_time regex timer chrono)
 
 # g2o
-LIST(APPEND CMAKE_MODULE_PATH /home/ehambram/workspaces/libraries/g2o/cmake_modules)
-find_package(Cholmod REQUIRED)
-find_package(BLAS REQUIRED)
-find_package(LAPACK REQUIRED)
-find_package(CSparse REQUIRED)
-Set(G2O_ROOT /usr/local/lib)
+LIST(APPEND CMAKE_MODULE_PATH /home/user/workspaces/libraries/g2o/cmake_modules)
 find_package(G2O REQUIRED)
+# Find the core elements
+FIND_G2O_LIBRARY(G2O_STUFF_LIBRARY stuff)
+FIND_G2O_LIBRARY(G2O_CORE_LIBRARY core)
+# Find the CLI library
+FIND_G2O_LIBRARY(G2O_CLI_LIBRARY cli)
+FIND_G2O_LIBRARY(G2O_OPENGL_LIBRARY opengl_helper)
+# Find the pluggable solvers
+FIND_G2O_LIBRARY(G2O_SOLVER_CHOLMOD solver_cholmod)
+FIND_G2O_LIBRARY(G2O_SOLVER_CSPARSE solver_csparse)
+FIND_G2O_LIBRARY(G2O_SOLVER_CSPARSE_EXTENSION csparse_extension)
+FIND_G2O_LIBRARY(G2O_SOLVER_DENSE solver_dense)
+FIND_G2O_LIBRARY(G2O_SOLVER_PCG solver_pcg)
+FIND_G2O_LIBRARY(G2O_SOLVER_SLAM2D_LINEAR solver_slam2d_linear)
+FIND_G2O_LIBRARY(G2O_SOLVER_STRUCTURE_ONLY solver_structure_only)
+FIND_G2O_LIBRARY(G2O_SOLVER_EIGEN solver_eigen)
+# Find the predefined types
+FIND_G2O_LIBRARY(G2O_TYPES_DATA types_data)
+FIND_G2O_LIBRARY(G2O_TYPES_ICP types_icp)
+FIND_G2O_LIBRARY(G2O_TYPES_SBA types_sba)
+FIND_G2O_LIBRARY(G2O_TYPES_SCLAM2D types_sclam2d)
+FIND_G2O_LIBRARY(G2O_TYPES_SIM3 types_sim3)
+FIND_G2O_LIBRARY(G2O_TYPES_SLAM2D types_slam2d)
+FIND_G2O_LIBRARY(G2O_TYPES_SLAM3D types_slam3d)
+set(G2O_USE_VENDORED_CERES true)
 SET(G2O_LIBS 
-g2o_cli g2o_ext_freeglut_minimal g2o_simulator 
-g2o_solver_slam2d_linear g2o_types_icp g2o_types_slam2d 
-g2o_core g2o_interface g2o_solver_csparse 
-g2o_solver_structure_only g2o_types_sba g2o_types_slam3d 
-g2o_csparse_extension g2o_opengl_helper g2o_solver_dense 
-g2o_stuff g2o_types_sclam2d g2o_parser g2o_solver_pcg 
-g2o_types_data g2o_types_sim3 cxsparse g2o_solver_cholmod ${CHOLMOD_LIBRARIES})
+${G2O_STUFF_LIBRARY} ${G2O_CORE_LIBRARY} ${G2O_CLI_LIBRARY} ${G2O_SOLVER_CHOLMOD} ${G2O_SOLVER_CSPARSE}
+${G2O_SOLVER_CSPARSE_EXTENSION} ${G2O_SOLVER_DENSE} ${G2O_SOLVER_PCG} ${G2O_SOLVER_SLAM2D_LINEAR} 
+${G2O_SOLVER_STRUCTURE_ONLY} ${G2O_SOLVER_EIGEN} ${G2O_TYPES_DATA} ${G2O_TYPES_ICP} ${G2O_TYPES_SBA}
+${G2O_TYPES_SCLAM2D} ${G2O_TYPES_SIM3} ${G2O_TYPES_SLAM2D} ${G2O_TYPES_SLAM3D} ${G2O_OPENGL_LIBRARY})
 
 # OpenMP
 find_package(OpenMP REQUIRED)

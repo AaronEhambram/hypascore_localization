@@ -814,9 +814,9 @@ void VisualOdometry::graph_optimization_stereo_odometry()
   // create optimizer, solver and graph
   g2o::SparseOptimizer optimizer;
   std::unique_ptr<g2o::BlockSolverX::LinearSolverType> linearSolver; // BlockSolver_6_3
-  linearSolver = g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolverX::PoseMatrixType>>();//LinearSolverCSparse//LinearSolverCholmod//LinearSolverDense//LinearSolverEigen
+  linearSolver = std::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolverX::PoseMatrixType>>();//LinearSolverCSparse//LinearSolverCholmod//LinearSolverDense//LinearSolverEigen
   g2o::OptimizationAlgorithmLevenberg* solver;
-  solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolverX>(std::move(linearSolver)));
+  solver = new g2o::OptimizationAlgorithmLevenberg(std::make_unique<g2o::BlockSolverX>(std::move(linearSolver)));
   optimizer.setAlgorithm(solver);
   int vertex_id = 0; 
 
@@ -882,7 +882,7 @@ void VisualOdometry::graph_optimization_stereo_odometry()
       Graph::Observation* cur_obs = landmark->obsv_map_[cur_f]; 
 
       // create a landmark vertex
-      g2o::VertexSBAPointXYZ* v_l = new g2o::VertexSBAPointXYZ();
+      g2o::VertexPointXYZ* v_l = new g2o::VertexPointXYZ();
       v_l->setId(vertex_id);
       vertex_id++;
       g2o::Vector3 pos(prev_obs->lcam_point_);
@@ -1074,9 +1074,9 @@ void VisualOdometry::graph_optimization_batch_bundle_adjustment()
       // create optimizer, solver and graph
       g2o::SparseOptimizer optimizer;
       std::unique_ptr<g2o::BlockSolverX::LinearSolverType> linearSolver; // BlockSolver_6_3
-      linearSolver = g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolverX::PoseMatrixType>>();//LinearSolverCSparse//LinearSolverCholmod//LinearSolverDense//LinearSolverEigen
+      linearSolver = std::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolverX::PoseMatrixType>>();//LinearSolverCSparse//LinearSolverCholmod//LinearSolverDense//LinearSolverEigen
       g2o::OptimizationAlgorithmLevenberg* solver;
-      solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolverX>(std::move(linearSolver)));
+      solver = new g2o::OptimizationAlgorithmLevenberg(std::make_unique<g2o::BlockSolverX>(std::move(linearSolver)));
       optimizer.setAlgorithm(solver);
       // Set the default terminate action
       g2o::SparseOptimizerTerminateAction* terminateAction = new g2o::SparseOptimizerTerminateAction;
@@ -1137,12 +1137,12 @@ void VisualOdometry::graph_optimization_batch_bundle_adjustment()
 
       // 2.) insert all landmarks connected to key_frame to graph
       mutex_delete_landmarks_.lock();
-      // need to save a map from Landmark* to VertexSBAPointXYZ*
-      std::map<Graph::Landmark*,g2o::VertexSBAPointXYZ*> landmark_vertex_map;
+      // need to save a map from Landmark* to VertexPointXYZ*
+      std::map<Graph::Landmark*,g2o::VertexPointXYZ*> landmark_vertex_map;
       for(Graph::Landmark* l : key_frame->seen_landmarks_)
       {
         // create a landmark vertex
-        g2o::VertexSBAPointXYZ* v_l = new g2o::VertexSBAPointXYZ();
+        g2o::VertexPointXYZ* v_l = new g2o::VertexPointXYZ();
         v_l->setId(vertex_id);
         vertex_id++;
         g2o::Vector3 pos(l->obsv_map_[key_frame]->lcam_point_);
@@ -1195,7 +1195,7 @@ void VisualOdometry::graph_optimization_batch_bundle_adjustment()
       optimizer.optimize(20);
 
       // make landmarks flexible
-      for(std::pair<Graph::Landmark*,g2o::VertexSBAPointXYZ*> landmark_vertex_pair : landmark_vertex_map)
+      for(std::pair<Graph::Landmark*,g2o::VertexPointXYZ*> landmark_vertex_pair : landmark_vertex_map)
       {
         landmark_vertex_pair.second->setFixed(false);
       }
@@ -1384,9 +1384,9 @@ void VisualOdometry::contract_consecutive_frames_odom(Graph::Frame* f1, Graph::F
   // create optimizer, solver and graph
   g2o::SparseOptimizer optimizer;
   std::unique_ptr<g2o::BlockSolverX::LinearSolverType> linearSolver; // BlockSolver_6_3
-  linearSolver = g2o::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolverX::PoseMatrixType>>();//LinearSolverCSparse//LinearSolverCholmod//LinearSolverDense//LinearSolverEigen
+  linearSolver = std::make_unique<g2o::LinearSolverCholmod<g2o::BlockSolverX::PoseMatrixType>>();//LinearSolverCSparse//LinearSolverCholmod//LinearSolverDense//LinearSolverEigen
   g2o::OptimizationAlgorithmLevenberg* solver;
-  solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolverX>(std::move(linearSolver)));
+  solver = new g2o::OptimizationAlgorithmLevenberg(std::make_unique<g2o::BlockSolverX>(std::move(linearSolver)));
   optimizer.setAlgorithm(solver);
   int vertex_id = 0; 
 
@@ -1418,7 +1418,7 @@ void VisualOdometry::contract_consecutive_frames_odom(Graph::Frame* f1, Graph::F
     Graph::Observation* f1_obsv = obsv_pair.first;
     Graph::Observation* f2_obsv = obsv_pair.second; 
     // create a landmark vertex
-    g2o::VertexSBAPointXYZ* v_l = new g2o::VertexSBAPointXYZ();
+    g2o::VertexPointXYZ* v_l = new g2o::VertexPointXYZ();
     v_l->setId(vertex_id);
     vertex_id++;
     g2o::Vector3 pos(f1_obsv->lcam_point_);

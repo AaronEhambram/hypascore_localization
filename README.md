@@ -61,15 +61,16 @@ mkdir build ; cd build ; cmake .. ; make        # build the sources
 sudo make install                               # install the library
 cd ..
 ```
-6. [Install g2o](https://github.com/RainerKuemmerle/g2o): Here we also recommend the out of source build. The commit id to the g2o version that we use is given in the following.
+6. [Install g2o](https://github.com/RainerKuemmerle/g2o): Here we also recommend the out of source build. The commit id to the g2o version that we use is given in the following. In line 51 in the CMakeLists.txt you may need to extend the `CMAKE_MODULE_PATH` if g2o is built locally.
 ```bash
 git clone https://github.com/RainerKuemmerle/g2o.git  # download the sources from GitHub
 cd g2o
-git checkout 14b8af0bcbcee2c33fe82d7ba7ce276ba90d43ac # specific commit id
+git checkout 893611ea6b97da4178f39a0c54ba2f1375ee6de0 # specific commit id (if you do not want to run into version problems)
 mkdir build ; cd build ; cmake .. ; make    # build the sources
 sudo make install                           # install the library
 cd ..
 ```
+
 
 
 ## <a name="Build"></a>Build
