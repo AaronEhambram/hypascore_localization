@@ -5,9 +5,9 @@ Click on the [image](readme/hypascore_localization_example.mp4) to see the tease
 <a name="teaser_video"></a>
 [<img src=readme/feedback_to_global_localization.png>](readme/hypascore_localization_example.mp4)
 
-The method consists of three modules as shown in the figure above – visual odometry, coarse localization, and refined localization. The HyPaSCoRe Localization uses a stereo camera system, a LiDAR, and GNSS data, focusing on localization in urban canyons where GNSS data can be inaccurate.
+The method consists of three modules as shown in the [figure](#overview) – visual odometry, coarse localization, and refined localization. The HyPaSCoRe Localization uses a stereo camera system, a LiDAR, and GNSS data, focusing on localization in urban canyons where GNSS data can be inaccurate.
 
-<p align="center">
+<a name="overview"></a><p align="center">
 <img src="readme/Overview_full_diss_new.png" alt="overview" width="50%" height="50%" title="HyPaSCoRe Localization Overview">
 </p>
 
@@ -23,9 +23,9 @@ The visual odometry module computes the relative motion of the vehicle. In contr
 7. [License](#License)
 
 ## <a name="Dependencies"></a>Dependencies
-The code is tested on Ubuntu 18.04 with ROS melodic and with Ubuntu 20.04 with ROS noetic. Note that you need to select the right branch depending on which distribution you are using. 
+The code is tested on Ubuntu 18.04 with ROS melodic and on Ubuntu 20.04 with ROS noetic. Note that you need to select the right branch depending on which distribution you are using. The main branch is dedicated for Ubuntu 20.04 with ROS noetic.
 
-You need to install the following framework/libraries:
+You need to install the following frameworks/libraries:
 1. [Installl ROS](http://wiki.ros.org/noetic/Installation/Ubuntu)
 2. [Install CUDA](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html): We recommend the [deb (local) installation](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_local). Do not forget to export  the `PATH` and `LD_LIBRARY_PATH`. For example you can add the following lines to the .bashrc:
 ```bash
@@ -38,7 +38,7 @@ cd <opencv_build_directory>
 cmake -DOPENCV_EXTRA_MODULES_PATH=<opencv_contrib>/modules -DWITH_CUDA=ON -DWITH_TBB=ON <opencv_source_directory>
 make -j8
 ```
-4. [Install IBEX](https://github.com/lebarsfa/ibex-lib/tree/actions): The last version of the unofficial development repository can be found [here](https://github.com/lebarsfa/ibex-lib/tree/actions).
+4. [Install IBEX](https://github.com/lebarsfa/ibex-lib/tree/actions): The last version of the unofficial development repository can be found [here](https://github.com/lebarsfa/ibex-lib/tree/actions). Further installation remarks can be found in the [Codac documentation](http://codac.io/install/01-installation-full-linux.html).
 ```bash
 sudo apt-get install -y g++ gcc flex bison cmake git libeigen3-dev # Requirements to compile IBEX and Codac
 git clone -b actions https://github.com/lebarsfa/ibex-lib.git # Download IBEX sources from GitHub
@@ -61,7 +61,7 @@ mkdir build ; cd build ; cmake .. ; make        # build the sources
 sudo make install                               # install the library
 cd ..
 ```
-6. [Install g2o](https://github.com/RainerKuemmerle/g2o): Here we also recommend the out of source build. The commit id to the g2o version that we use is shown in the following.
+6. [Install g2o](https://github.com/RainerKuemmerle/g2o): Here we also recommend the out of source build. The commit id to the g2o version that we use is given in the following.
 ```bash
 git clone https://github.com/RainerKuemmerle/g2o.git  # download the sources from GitHub
 cd g2o
@@ -73,10 +73,10 @@ cd ..
 
 
 ## <a name="Build"></a>Build
-The implementation has to be built as a catkin-package (ROS1). Locate the this repository in the `src`-folder of the catkin workspace:
+The package has to be built as a catkin-package (ROS1). Locate the repository in the `src`-folder of the catkin workspace:
 ```bash
 cd path/to/catkin_ws/src
-git clone https://github.com/AaronEhambram/dummy.git
+git clone https://github.com/AaronEhambram/hypascore_localization.git
 cd ..
 catkin_make
 ```
@@ -86,7 +86,7 @@ set(OpenCV_DIR path/to/opencv-4.7.0/install)
 ```
 
 ## <a name="How-to-run"></a>How to run
-The current implementation reads a rosbag and performs the localization offline at sensor rate. However, based on the script, you can use the approach also online providing the PoseEstimationSystem class the sensor data directly. To showcase the HyPaSCoRe Localization we first introduce a [quick start example](#quick-start). Furthermore, we provide [custom evaluation scripts](#evaluation).  We also provide [map parsers](#map-parsers) so that you can generate your own .map-file for the regions you want to perform the localization. The custom .map-file can be generated from .osm and .gml files. As we use contractors to deal with the set-membership-based uncertainty representation, we also provide interactive exemplary test-files to provide an intuitive undertanding of how the custom contractors work using the [codac library](http://codac.io/).
+The current implementation reads a rosbag and performs the localization offline at sensor rate. However, based on the script, you can use the approach also online providing the PoseEstimationSystem class the sensor data directly. To showcase the HyPaSCoRe Localization we first introduce a [quick start example](#quick-start). Furthermore, we provide [custom evaluation scripts](#evaluation).  We also provide [map parsers](#map-parsers) so that you can generate your own .map-file for the regions you want to use our approach. The custom .map-file can be generated from .osm and .gml files. As we use contractors to deal with the set-membership-based uncertainty representation, we also provide interactive exemplary test-files to provide an intuitive understanding of how the custom contractors work using the [codac library](http://codac.io/).
 ### <a name="quick-start"></a>Quick Start with an Exemplary KITTI Trajectory
 For a quick start we provide a preprocessed rosbag of the [KITTI 2011_10_03_drive_0027 raw data](https://www.cvlibs.net/datasets/kitti/raw_data.php?type=residential), the calibration data and the map. You can download the data [here](https://seafile.cloud.uni-hannover.de/d/13383f8fe90c4f73a3cb/). To start the example, the launch-file needs to be modified to specify the location of the downloaded data. Therefore, you need to edit `launch/hypascore_localization_0027kitti.launch`: 
 
@@ -102,14 +102,14 @@ For a quick start we provide a preprocessed rosbag of the [KITTI 2011_10_03_driv
 ```xml
 <param name="city_model_file" type="string" value="/path/0027_map_small.map"/>
 ```
-Now the launch file is ready to start the example. You can start example with
+Now the launch file is ready to start the demo with
 ```bash
 roslaunch hypascore_localization hypascore_localization_0027kitti.launch
 ```
 As shown in the [video above](#teaser_video), the visualizations will pop up.
 
 ### <a name="evaluation"></a>Evaluation
-During the execution of the HyPaSCoRe Localization output files can be dumped. We plot those output files using the python scripts located in `src/evaluation`. To dump the output files, the launch file need to be configured accordingly. To obtain the overall-results files, the destination files need to be specified in the launch file in line 22 to 24.
+During the execution of the HyPaSCoRe Localization, results files can be dumped. We plot the results using the python scripts located in `src/evaluation`. To dump the output files, the launch file need to be configured accordingly. To obtain the overall-results files, the destination files need to be specified in the launch file in line 22 to 24.
 ```xml
 <param name="file_gt_poses" type="string" 	value="path/gt_traj.txt"/> 
 <param name="file_overall_results" type="string" 	value="path/out.txt"/> 
@@ -132,7 +132,7 @@ The evaluation plots ([matplotlib](https://matplotlib.org/)) will pop up.
 <img src="readme/Trajectory.png" alt="overview" width="30%" height="30%" title="HyPaSCoRe Localization Overview"> <img src="readme/Figure_4.png" alt="overview" width="30%" height="30%" title="HyPaSCoRe Localization Overview"> <img src="readme/Outside_feasible_set_frames.png" alt="overview" width="30%" height="30%">
 
 ### <a name="map-parsers"></a>Download Maps and Parsers
-The building map needs to be downloaded before the localization. For the example the map-file can be downloaded. We use a custom .map-file that needs to be generated. Therefore we provide parsers that parse, for instance, .osm-files to our custom format. The parsers can be found in `src/map_tools`. To obtain the building map to any region we recommend to download the [OpenStreetMap](https://www.openstreetmap.org/#map=6/51.330/10.453) file. [JOSM](https://josm.openstreetmap.de/) is a very handy tool for that. You can download the application by
+The building map needs to be downloaded beforehand. For the demo, the .map-file can be downloaded. We use a custom .map-file that needs to be generated. Therefore we provide parsers that parse, for instance, .osm-files to our custom format. The parsers can be found in `src/map_tools`. To obtain the building map to any region we recommend to download the [OpenStreetMap](https://www.openstreetmap.org/#map=6/51.330/10.453) file. [JOSM](https://josm.openstreetmap.de/) is a very handy tool for that. You can download the application by
 ```bash
 sudo apt-get install josm
 ```   
@@ -141,7 +141,7 @@ In JOSM the region of interest can be selected and the .osm-file can be download
 To generate the .map-file from the .osm, line 10 needs to be modified to specify the destination file and in line 14 you need to specify the input osm file. Then you can run the python-script. 
 
 ### Contractor Test Files
-The test-files for the contractors that can be found in `src/contractors` are also built as executables. The interactive demos can be launched by starting the repective nodes. To start the No-Cross Contractor (left) and Polygon Separator (right) demos oyu need to type the follwing command:
+The test-files for the contractors that can be found in `src/contractors` are also built as executables. The interactive demos can be launched by starting the repective nodes. To start the No-Cross Contractor (left) and Polygon Separator (right) demos you need to type the following commands:
 ```bash
 rosrun i_vil_slam_in_map test_ctcnocross_node
 rosrun i_vil_slam_in_map test_seppolygon_node
@@ -151,17 +151,17 @@ Then you will see the interactive visualizations.
 ![Alt Text](readme/contractors.gif)
 
 ## <a name="Troubleshooting"></a>Troubleshooting
-- When .so-files are not found, extend the `LD_LIBRARY_PATH` by editing the .bashrc-file. I needed to add the line because I had linking errors during runtime with opengl_helper. 
+- When .so-files are not found, extend the `LD_LIBRARY_PATH` by editing the .bashrc-file. For instance, I had linking errors during runtime with opengl_helper. 
 ```bash
 export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH" 
 ```
-- cudawarping.cpp handles _M in line 186 incorrectly. Our workaround is to exchange the line 186 by the follwing
+- cudawarping.cpp handles _M in line 186 incorrectly. Our workaround is to exchange the line 186 by the following
 ```c++
 GpuMat __M = _M.getGpuMat();
 Mat M;
 __M.download(M);
 ```
-- We are using [cv_bridge](https://github.com/ros-perception/vision_opencv/tree/rolling/cv_bridge) to convert the sensor_msgs to cv::Mat. If you have built OpenCV locally, you should rebuild the cv_bridge-package in your catkin-workspace with the locally built OpenCV to avoid version mismatches.
+- We are using [cv_bridge](https://github.com/ros-perception/vision_opencv/tree/rolling/cv_bridge) to convert the sensor_msgs to cv::Mat. If you have built OpenCV locally, you should rebuild the cv_bridge-package in your catkin-workspace with the locally built OpenCV version to avoid version mismatches.
 
 - If you have multiple packages that link to IBEX, the `Ibex::ibex` target may not be available to all packages (only the first package that adds the target). Using `catkin build` this problem can be avoided. 
 
