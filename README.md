@@ -3,7 +3,8 @@ This repository contains the implementation of the **Hy**brid **P**robabilistic 
 
 Click on the [image](readme/hypascore_localization_example.mp4) to see the teaser video:
 <a name="teaser_video"></a>
-[<img src=readme/feedback_to_global_localization.png>](readme/hypascore_localization_example.mp4)
+
+https://github.com/AaronEhambram/hypascore_localization/assets/133852603/d684f4c2-32e8-488d-b0f1-aa21c025646b
 
 The method consists of three modules as shown in the [figure](#overview) – visual odometry, coarse localization, and refined localization. The HyPaSCoRe Localization uses a stereo camera system, a LiDAR, and GNSS data, focusing on localization in urban canyons where GNSS data can be inaccurate.
 
