@@ -1,7 +1,7 @@
 # <a name="HyPaSCoRe-Localization"></a>HyPaSCoRe Localization
 This repository contains the implementation of the **Hy**brid **P**robabilistic **a**nd **S**et-Membership-based **Co**arse and **Re**fined (HyPaSCoRe) Localization. This method localizes a robot in a building map in real-time and considers two types of hybridizations. First, set-membership approaches are used to robustify and control probabilistic approaches. Second, probabilistic approaches are used to reduce the pessimism of set-membership approaches by augmenting them with further probabilistic constraints. 
 
-Click on the [image](readme/hypascore_localization_example.mp4) to see the teaser video:
+Play the teaser [video](readme/hypascore_localization_example.mp4):
 <a name="teaser_video"></a>
 
 https://github.com/AaronEhambram/hypascore_localization/assets/133852603/d684f4c2-32e8-488d-b0f1-aa21c025646b
