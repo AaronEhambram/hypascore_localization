@@ -33,7 +33,7 @@ You need to install the following frameworks/libraries:
 export PATH="/usr/local/cuda-12.1/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH"
 ```
-3. [Install OpenCV](https://github.com/opencv/opencv) with [opencv_constrib](https://github.com/opencv/opencv_contrib), TBB and CUDA. Enable WITH_CUDA and WITH_TBB and specify the opencv_contrib/modules path.
+3. [Install OpenCV](https://github.com/opencv/opencv) with [opencv_contrib](https://github.com/opencv/opencv_contrib), TBB and CUDA. Enable WITH_CUDA and WITH_TBB and specify the opencv_contrib/modules path.
 ```bash
 cd <opencv_build_directory>
 cmake -DOPENCV_EXTRA_MODULES_PATH=<opencv_contrib>/modules -DWITH_CUDA=ON -DWITH_TBB=ON <opencv_source_directory>
