@@ -140,3 +140,6 @@ target_link_libraries(test_ctcrangebearingnocross_node PUBLIC ${catkin_LIBRARIES
 # SepPolygon
 add_executable(test_seppolygon_node src/test/test_SepPolygon.cpp src/contractors/SepPolygon.cpp src/contractors/CtcBoundaryLine.cpp)
 target_link_libraries(test_seppolygon_node PUBLIC ${catkin_LIBRARIES} Ibex::ibex ${CODAC_LIBRARIES} OpenMP::OpenMP_CXX ${OpenCV_LIBS})
+# CtcConstell
+add_executable(test_ctcconstell_node src/test/test_CtcConstell.cpp src/localization/CMMap.cpp)
+target_link_libraries(test_ctcconstell_node PUBLIC ${catkin_LIBRARIES} Ibex::ibex ${CODAC_LIBRARIES} OpenMP::OpenMP_CXX ${OpenCV_LIBS})
