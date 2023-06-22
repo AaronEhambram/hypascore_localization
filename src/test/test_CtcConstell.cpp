@@ -197,7 +197,8 @@ void generate_map()
     }
     double d = n.transpose()*s; 
     wgl.line_params = Eigen::Vector3d(n(0),n(1),d);
-    std::cout << wgl.line_params << std::endl << std::endl; 
+    //std::cout << wgl.line_params << std::endl << std::endl; 
+    std::cout << "angle: " << angle << " d: " << d << std::endl;
     map_hull[0] = map_hull[0] | s(0);
     map_hull[0] = map_hull[0] | e(0);
     map_hull[1] = map_hull[1] | s(1);
@@ -434,9 +435,13 @@ void transform_local_lines_to_map(const std::vector<WallGroundLine>& local_lines
   for(const WallGroundLine& wgl : local_lines)
   {
     ibex::Interval angle_l(atan2(wgl.line_params(1),wgl.line_params(0)));
+    angle_l.inflate(0.00001);
     ibex::Interval d_l(wgl.line_params(2));
+    d_l.inflate(0.00001);
     ibex::Interval angle_m = psi_m+angle_l; // PROBLEM!!!! -> angle_m can be larger than pi/2 or smaller than -pi/2
-    bool change_dm = false; 
+    bool change_dm = false;
+    bool add_mpi = false; 
+    // Deal with the pi/2 problem of linesn by clipping the rotation always between -pi/2 and pi/2 
     if(angle_m.lb() > M_PI/2.0)
     {
       angle_m = angle_m - M_PI;
@@ -446,47 +451,37 @@ void transform_local_lines_to_map(const std::vector<WallGroundLine>& local_lines
     {
       angle_m = angle_m + M_PI;
       change_dm = true;
+      add_mpi = true; 
     }
     else if(angle_m.contains(M_PI/2.0) || angle_m.contains(-M_PI/2.0))
     {
-      angle_m = ibex::Interval(-M_PI/2.0,M_PI/2.0);
+      continue; // ignore if orientation on the border: problem with empty set
     }
-    std::cout << "1 angle_m: " << angle_m << std::endl; 
     codac::CtcPolar ctc_polar; 
     ibex::Interval nx, ny;
     ibex::Interval roh(1.0);
     ctc_polar.contract(nx,ny,roh,angle_m); 
-    std::cout << "x_m: " << x_m << std::endl;
-    std::cout << "y_m: " << y_m << std::endl;
     ibex::Interval nxx_m = nx*x_m;
     ibex::Interval nyy_m = ny*y_m;
     ibex::Interval sum = nxx_m + nyy_m;
     ibex::Interval d_m = d_l + sum;
-    if(change_dm)
+    if(change_dm) // if the orientation was changes, d_m also changes!
     {
       d_m = -d_l + sum; 
     }
-    std::cout << "sum: " << sum << std::endl;
-    std::cout << "d_l: " << d_l << std::endl;
-    std::cout << "d_m: " << d_m << std::endl;
-    std::cout << "2 angle_m: " << angle_m << std::endl;
-
 
     ibex::IntervalVector line_param_m(2); 
     line_param_m[0] = angle_m;
     line_param_m[1] = d_m; 
-    draw_param_box(im,line_param_m,hull,pixel_per_angle,pixel_per_dist,cv::Scalar(255,0,0),2);
-    std::cout << "bf constell line_param: " << line_param_m << std::endl;
+    draw_param_box(im,line_param_m,hull,pixel_per_angle,pixel_per_dist,cv::Scalar(255,0,0),2); // parameter box in hough-space before contraction 
     ctc_constell.contract(line_param_m);
-    std::cout << "line_param: " << line_param_m << std::endl;
-    
 
-   // draw_param_box(im,line_param_m,hull,pixel_per_angle,pixel_per_dist,cv::Scalar(0,100,0),2);
+    draw_param_box(im,line_param_m,hull,pixel_per_angle,pixel_per_dist,cv::Scalar(0,100,0),2); // parameter box in hough-space after contraction 
     angle_m = line_param_m[0]; 
     d_m = line_param_m[1]; 
 
     // backward
-    if(!change_dm)
+    if(!change_dm) // consider the pi/2-problem as mentioned above
     {
       ibex::bwd_add(d_m,d_l,sum);
     }
@@ -499,18 +494,31 @@ void transform_local_lines_to_map(const std::vector<WallGroundLine>& local_lines
     ibex::bwd_mul(nxx_m,nx,x_m);
     ibex::bwd_mul(nyy_m,ny,y_m);
     ctc_polar.contract(nx,ny,roh,angle_m);
-    //ibex::bwd_add(angle_m,psi_m,angle_l);
-    std::cout << "angle_m: " << angle_m << std::endl; 
-    ibex::Interval psi_test = angle_m - angle_l; 
-    std::cout << "psi: " << psi_test << std::endl; 
-    std::cout << std::endl; 
-
-     
+    if(change_dm) // here consider the pi/2 problem for the orientation
+    {
+      if(add_mpi)
+      {
+        ibex::Interval angle_m_copy = angle_m;
+        angle_m_copy = angle_m_copy-M_PI;  
+        ibex::bwd_add(angle_m_copy,psi_m,angle_l);
+        angle_m = angle_m_copy + M_PI;
+      }
+      else
+      {
+        ibex::Interval angle_m_copy = angle_m;
+        angle_m_copy = angle_m_copy+M_PI;  
+        ibex::bwd_add(angle_m_copy,psi_m,angle_l);
+        angle_m = angle_m_copy - M_PI;
+      }
+    }
+    else
+    {
+      ibex::bwd_add(angle_m,psi_m,angle_l);
+    }
   }
-  std::cout << "---" << std::endl;
-  //pose[0] = x_m; 
-  //pose[1] = y_m;
-  //pose[2] = psi_m;
+  pose[0] = x_m; 
+  pose[1] = y_m;
+  pose[2] = psi_m;
 }
 
 static void on_trackbar( int, void* )
