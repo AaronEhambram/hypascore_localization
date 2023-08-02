@@ -21,7 +21,7 @@
 		<rosparam param="rosbags_list" 			subst_value="True">$(arg rosbags_list)</rosparam>
 		<param name="file_gt_poses"  					type="string" 	value=""/> 
 		<param name="file_overall_results"  	type="string" 	value=""/> 
-		<param name="file_overall_only_rt_results"  	type="string" 	value=""/> 
+		<param name="file_overall_only_rt_results"  	type="string" 	value=""/>  
 
 		<!--*************Image Processing Parameters*************-->
 		<param name="im_resize_factor"  													type="double" value="1.0"/>

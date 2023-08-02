@@ -28,7 +28,9 @@ int main()
                             *Eigen::AngleAxisd(teta,Eigen::Vector3d::UnitY())
                             *Eigen::AngleAxisd(phi,Eigen::Vector3d::UnitX());
   f1_T_f2.linear() = q.matrix(); 
-  std::cout << "Ground Truth: " << std::endl << f1_T_f2.matrix() << std::endl << "---" << std::endl << std::endl;
+  std::cout << "Ground Truth: " << std::endl << f1_T_f2.matrix() << std::endl 
+  << tx << " " << ty << " " << tz << " " << phi<< " " << teta << " " << psi
+  << "---" << std::endl << std::endl;
 
   // transform points to te second frame
   std::vector<Eigen::Vector3d> points_f2(5);
@@ -46,22 +48,22 @@ int main()
     Eigen::Vector3d& p_f2 = points_f2[i];
 
     ibex::IntervalVector b_f1(3), b_f2(3);
-    b_f1[0] = ibex::Interval(p_f1(0)).inflate(0.05);
-    b_f1[1] = ibex::Interval(p_f1(1)).inflate(0.05);
-    b_f1[2] = ibex::Interval(p_f1(2)).inflate(0.2);
-    b_f2[0] = ibex::Interval(p_f2(0)).inflate(0.05);
-    b_f2[1] = ibex::Interval(p_f2(1)).inflate(0.05);
-    b_f2[2] = ibex::Interval(p_f2(2)).inflate(0.2);
+    b_f1[0] = ibex::Interval(p_f1(0)).inflate(0.0);
+    b_f1[1] = ibex::Interval(p_f1(1)).inflate(0.0);
+    b_f1[2] = ibex::Interval(p_f1(2)).inflate(0.0);
+    b_f2[0] = ibex::Interval(p_f2(0)).inflate(0.0);
+    b_f2[1] = ibex::Interval(p_f2(1)).inflate(0.0);
+    b_f2[2] = ibex::Interval(p_f2(2)).inflate(0.0);
     boxes_f1.push_back(b_f1);
     boxes_f2.push_back(b_f2);
   }
 
   ibex::IntervalVector f1_p_f2(6);
   //f1_p_f2[0] = tx;
-  f1_p_f2[1] = ty;
-  f1_p_f2[3] = phi;
+  //f1_p_f2[1] = ty;
+  //f1_p_f2[3] = phi;
   //f1_p_f2[4] = teta;
-  f1_p_f2[5] = psi;
+  //f1_p_f2[5] = psi;
   ibex::IntervalVector result(6); result.set_empty(); 
   std::cout << f1_p_f2 << std::endl;
   std::stack<ibex::IntervalVector> s;
@@ -78,7 +80,7 @@ int main()
     }
     if(!box.is_empty())
     {
-      if(box[4].diam() > 0.005)
+      if(box[4].diam() > 0.005) // only bisect psi
       {
         std::pair<ibex::IntervalVector,ibex::IntervalVector> bisected_boxes = box.bisect(4);
         s.push(bisected_boxes.first);
